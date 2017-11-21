@@ -1,3 +1,4 @@
 {
-	"*.js": ["prettier --write", "git add"]
+	"browsertest/{setup,runTests}.js": ["prettier --write", "git add"],
+	"{cypress/integration,src,test}/**/*.js": ["prettier --write", "git add"]
 }
