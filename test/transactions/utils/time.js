@@ -20,14 +20,13 @@ import {
 describe('time module', () => {
 	const nowRealTime = 1464109220000;
 	const nowEpochTime = 20;
-	let clock;
 
-	before(() => {
-		clock = sinon.useFakeTimers(nowRealTime, 'Date');
+	beforeEach(() => {
+		sandbox.useFakeTimers(nowRealTime);
 	});
 
-	after(() => {
-		clock.restore();
+	afterEach(() => {
+		sandbox.clock.restore();
 	});
 
 	describe('#getTimeFromBlockchainEpoch', () => {
