@@ -17,99 +17,6 @@ import { GET } from '../constants';
 import * as utils from './utils';
 
 /**
- * @method getNodes
- * @return {Array}
- * @private
- */
-
-export function getNodes() {
-	if (this.testnet) return this.defaultTestnetNodes;
-	if (this.ssl) return this.defaultSSLNodes;
-	return this.defaultNodes;
-}
-
-/**
- * @method isBanned
- * @return {Boolean}
- * @private
- */
-
-export function isBanned(node) {
-	return this.bannedNodes.includes(node);
-}
-
-/**
- * @method getRandomNode
- * @return  {String}
- * @private
- */
-
-export function getRandomNode() {
-	const nodes = getNodes.call(this).filter(node => !isBanned.call(this, node));
-
-	if (!nodes.length) {
-		throw new Error(
-			'Cannot get random node: all relevant nodes have been banned.',
-		);
-	}
-
-	const randomIndex = Math.floor(Math.random() * nodes.length);
-	return nodes[randomIndex];
-}
-
-/**
- * @method selectNewNode
- * @return {String}
- * @private
- */
-
-export function selectNewNode() {
-	const providedNode = this.options.node;
-
-	if (this.randomNode) {
-		return getRandomNode.call(this);
-	} else if (providedNode) {
-		if (isBanned.call(this, providedNode)) {
-			throw new Error(
-				'Cannot select node: provided node has been banned and randomNode is not set to true.',
-			);
-		}
-		return providedNode;
-	}
-
-	throw new Error(
-		'Cannot select node: no node provided and randomNode is not set to true.',
-	);
-}
-
-/**
- * @method banActiveNode
- * @private
- */
-
-export function banActiveNode() {
-	if (!isBanned.call(this, this.node)) {
-		this.bannedNodes.push(this.node);
-		return true;
-	}
-	return false;
-}
-
-/**
- * @method hasAvailableNodes
- * @return {Boolean}
- * @private
- */
-
-export function hasAvailableNodes() {
-	const nodes = getNodes.call(this);
-
-	return this.randomNode
-		? nodes.some(node => !isBanned.call(this, node))
-		: false;
-}
-
-/**
  * @method createRequestObject
  * @param method
  * @param requestType
@@ -208,11 +115,11 @@ export function handleSendRequestFailures(
 	error,
 ) {
 	const that = this;
-	if (hasAvailableNodes.call(that)) {
+	if (that.hasAvailableNodes()) {
 		return new Promise((resolve, reject) => {
 			setTimeout(() => {
 				if (that.randomNode) {
-					banActiveNode.call(that);
+					that.banActiveNode();
 				}
 				that.setNode();
 				that
