@@ -4,29 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _jsNacl = require('js-nacl');
+var _bip = require('bip39');
 
-var _jsNacl2 = _interopRequireDefault(_jsNacl);
+var _bip2 = _interopRequireDefault(_bip);
 
-var _liskApi = require('./api/liskApi');
+var _validation = require('./validation');
 
-var _liskApi2 = _interopRequireDefault(_liskApi);
-
-var _crypto = require('./crypto');
-
-var _crypto2 = _interopRequireDefault(_crypto);
-
-var _passphrase = require('./passphrase');
-
-var _passphrase2 = _interopRequireDefault(_passphrase);
-
-var _time = require('./transactions/utils/time');
-
-var time = _interopRequireWildcard(_time);
-
-var _transactions = require('./transactions');
-
-var _transactions2 = _interopRequireDefault(_transactions);
+var validation = _interopRequireWildcard(_validation);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -46,11 +30,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Removal or modification of this copyright notice is prohibited.
  *
  */
-global.naclFactory = _jsNacl2.default;
-
-global.naclInstance = null;
-_jsNacl2.default.instantiate(function (nacl) {
-  naclInstance = nacl;
-});
-
-exports.default = { crypto: _crypto2.default, transaction: _transactions2.default, api: _liskApi2.default, time: time, passphrase: _passphrase2.default };
+exports.default = {
+  Mnemonic: _bip2.default,
+  validation: validation
+};
