@@ -33,7 +33,7 @@ const defaultSenderPublicKey =
 const defaultSenderId = '18160565574430594874L';
 const defaultSenderSecondPublicKey =
 	'0401c8ac9f29ded9e1e4d5b6b43051cb25b22f27c7b7b35092161e851946f82f';
-const defaultAmount = 1000;
+const defaultAmount = (3 + 2 ** 62).toString();
 const defaultNoAmount = 0;
 const defaultTimestamp = 141738;
 const defaultTransactionId = '13987348420913138422';
@@ -65,7 +65,7 @@ describe('#getTransactionBytes', () => {
 
 		it('should return Buffer of type 0 (transfer LSK) transaction', () => {
 			const expectedBuffer = Buffer.from(
-				'AKopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU96AMAAAAAAABhilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsK',
+				'AKopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU9YAAAAAAAAEBhilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsK',
 				'base64',
 			);
 			const transactionBytes = getTransactionBytes(defaultTransaction);
@@ -76,7 +76,7 @@ describe('#getTransactionBytes', () => {
 		it('should return Buffer of type 0 (transfer LSK) with data', () => {
 			defaultTransaction.asset.data = 'Hello Lisk! Some data in here!...';
 			const expectedBuffer = Buffer.from(
-				'AKopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU96AMAAAAAAABIZWxsbyBMaXNrISBTb21lIGRhdGEgaW4gaGVyZSEuLi5hilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsK',
+				'AKopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU9YAAAAAAAAEBIZWxsbyBMaXNrISBTb21lIGRhdGEgaW4gaGVyZSEuLi5hilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsK',
 				'base64',
 			);
 			const transactionBytes = getTransactionBytes(defaultTransaction);
@@ -97,11 +97,10 @@ describe('#getTransactionBytes', () => {
 		it('should return Buffer of transaction with second signature', () => {
 			defaultTransaction.signSignature = defaultSecondSignature;
 			const expectedBuffer = Buffer.from(
-				'AKopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU96AMAAAAAAABhilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsKsAxK0ZiLyiRddENWYKJ4v+a/L176i9qW2Sf6v4tPb8/cspU/arrKoRnWiAmHpV3qDmNUvINmBStF+iMUVSICDw==',
+				'AKopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU9YAAAAAAAAEBhilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsKsAxK0ZiLyiRddENWYKJ4v+a/L176i9qW2Sf6v4tPb8/cspU/arrKoRnWiAmHpV3qDmNUvINmBStF+iMUVSICDw==',
 				'base64',
 			);
 			const transactionBytes = getTransactionBytes(defaultTransaction);
-
 			return transactionBytes.should.be.eql(expectedBuffer);
 		});
 
@@ -132,7 +131,7 @@ describe('#getTransactionBytes', () => {
 		it('should return Buffer of type 0 (transfer LSK) with additional properties', () => {
 			defaultTransaction.skip = false;
 			const expectedBuffer = Buffer.from(
-				'AKopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU96AMAAAAAAABhilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsK',
+				'AKopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU9YAAAAAAAAEBhilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsK',
 				'base64',
 			);
 			const transactionBytes = getTransactionBytes(defaultTransaction);
@@ -339,7 +338,7 @@ describe('#getTransactionBytes', () => {
 
 		it('should return Buffer of type 6 (dapp inTransfer) transaction', () => {
 			const expectedBuffer = Buffer.from(
-				'BqopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQAAAAAAAAAA6AMAAAAAAAAxMjM0MjEzYYpUl1IS6tk9+MiBZVxiVUS86O18zf5vCKQu7Psa3r0FEwe+UBS7BRYXuveBXVD2ISnnCRgZA2Hl1N1HllQbCg==',
+				'BqopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQAAAAAAAAAAYAAAAAAAAEAxMjM0MjEzYYpUl1IS6tk9+MiBZVxiVUS86O18zf5vCKQu7Psa3r0FEwe+UBS7BRYXuveBXVD2ISnnCRgZA2Hl1N1HllQbCg==',
 				'base64',
 			);
 			const transactionBytes = getTransactionBytes(inTransferTransction);
@@ -368,7 +367,7 @@ describe('#getTransactionBytes', () => {
 
 		it('should return Buffer of type 7 (dapp outTransfer) transaction', () => {
 			const expectedBuffer = Buffer.from(
-				'B6opAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU96AMAAAAAAAAxMjM0MjEzMTM5ODczNDg0MjA5MTMxMzg0MjJhilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsK',
+				'B6opAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU9YAAAAAAAAEAxMjM0MjEzMTM5ODczNDg0MjA5MTMxMzg0MjJhilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsK',
 				'base64',
 			);
 			const transactionBytes = getTransactionBytes(outTransferTransaction);
